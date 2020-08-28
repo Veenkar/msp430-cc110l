@@ -9,6 +9,9 @@
 **.cflags
 **.cxxflags
 **.cproject
+**.creator
+**.files
+**.includes
 **.creator.user
 
 # CCS
