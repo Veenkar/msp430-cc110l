@@ -2,7 +2,7 @@
 # CONFIG
 ################################################################
 IDIR=.
-SRC=.
+SRC=./src
 CC=msp430-gcc
 CFLAGS=-I$(IDIR) -mmcu=msp430g2553
 PROJ_NAME=acc_rcv
@@ -20,7 +20,7 @@ _SOURCES = main.c cc110l.c spi.c uart.c
 SOURCES = $(patsubst %,$(SRC)/%,$(_SOURCES))
 
 _OBJ = $(patsubst %.c,%.o,$(_SOURCES))
-OBJ = $(patsubst %.c,%.o,$(_SOURCES))
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 ################################################################
 # ALL
@@ -50,12 +50,14 @@ $(ODIR)/%.d: $(SRC)/%.c
 ################################################################
 # INCLUDE DEPENDENCIES TO THIS MAKEFILE
 ################################################################
--include $(SOURCES:.c=.d)
+_DEPS = $(patsubst %.c,%.d,$(_SOURCES))
+DEPS = $(patsubst %,$(ODIR)/%,$(_DEPS))
+-include $(DEPS)
 
 ################################################################
 # OBJECTS
 ################################################################
-$(ODIR)/%.o: $(ODIR)/%.d $(SRC)/%.c $(INCLUDE)/%.h
+$(ODIR)/%.o: $(SRC)/%.c $(ODIR)/%.d
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 ################################################################

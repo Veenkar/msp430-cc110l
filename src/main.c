@@ -25,13 +25,11 @@ void main(void) {
 
     sendbyte(0x22);
 
-/*    while(1){
+    while(1){
     	__delay_cycles(1000000);
     	UARTsendStr(recieve);
     	UARTsendHex(RFReceiveByte());
-
     }
-*/
 
     __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
 }
