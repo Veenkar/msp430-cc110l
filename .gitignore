@@ -1,0 +1,26 @@
+
+
+# build files
+**.o
+**.d
+
+# Qt creator
+**/acc_rcv.config
+**.cflags
+**.cxxflags
+**.cproject
+**.creator.user
+
+# CCS
+**.ccsproject
+**.project
+**.settings
+Debug
+.launches
+targetConfigs
+
+# vim
+**.swp
+
+
+
