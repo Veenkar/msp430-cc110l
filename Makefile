@@ -4,8 +4,11 @@
 IDIR=include
 SRC=src
 DEP=dep
+
+BUILDINFO=$(ODIR)/build.info
+
 CC=msp430-gcc
-CFLAGS=-I$(IDIR) -mmcu=msp430g2553
+CFLAGS=-I$(IDIR) -mmcu=msp430g2553 --vv
 PROJ_NAME=acc_rcv
 
 ################################################################
@@ -29,6 +32,14 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 all: $(PROJ_NAME)
 
 ################################################################
+# FLAGS CHANGE DETECTION
+################################################################
+PREV_CFLAGS := $(shell if [ -f $(BUILDINFO) ]; then cat "${BUILDINFO}"; fi)
+$(info curr flags: $(CFLAGS))
+#$(info prev flags: $(PREV_CFLAGS))
+$(shell if [ "$(PREV_CFLAGS)" != "$(CFLAGS)" ]; then echo "$(CFLAGS)" > $(BUILDINFO); fi)
+
+################################################################
 # MAIN
 ################################################################
 $(PROJ_NAME): $(OBJ)
@@ -45,7 +56,7 @@ $(PROJ_NAME): $(OBJ)
 $(DEP)/%.d: $(SRC)/%.c
 	@set -e; rm -f $@; \
 	$(CC) -M $(CPPFLAGS) -I $(IDIR) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : $(BUILDINFO) ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
 ################################################################
@@ -65,4 +76,4 @@ $(ODIR)/%.o: $(SRC)/%.c $(DEP)/%.d
 # CLEAN
 ################################################################
 clean:
-	rm -f $(PROJ_NAME) $(ODIR)/*.o $(DEP)/*.d $(ODIR)/*.d.* *~ core $(INCDIR)/*~
+	rm -f $(PROJ_NAME) $(ODIR)/*.o $(BUILDINFO) $(DEP)/*.d $(ODIR)/*.d.* *~ core $(INCDIR)/*~
