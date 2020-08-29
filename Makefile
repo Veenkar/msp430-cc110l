@@ -20,8 +20,8 @@ LDIR=lib
 #LIBS=-lm
 LIBS=
 
-_SOURCES = main.c cc110l.c spi.c uart.c
-SOURCES = $(patsubst %,$(SRC)/%,$(_SOURCES))
+SOURCES := $(wildcard $(SRC)/*.c)
+_SOURCES = $(patsubst $(SRC)/%,%,$(SOURCES))
 
 _OBJ = $(patsubst %.c,%.o,$(_SOURCES))
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
