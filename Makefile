@@ -17,7 +17,7 @@ BUILDINFO=$(ODIR)/build.info
 ################################################################
 PROJ_NAME=acc_rcv
 CC=msp430-gcc
-CFLAGS=-I$(IDIR) -mmcu=msp430g2553 --vv
+CFLAGS=-I$(IDIR) -mmcu=msp430g2553 --vv -g
 #LIBS=-lm
 LIBS=
 
