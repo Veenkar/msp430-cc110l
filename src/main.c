@@ -26,9 +26,10 @@ void main(void) {
     sendbyte(0x22);
 
     while(1){
-    	__delay_cycles(1000000);
-    	UARTsendStr(recieve);
-    	UARTsendHex(RFReceiveByte());
+    	__delay_cycles(10000);
+        sendbyte(0x22);
+    	UARTsendStr("-");
+    	//UARTsendHex(RFReceiveByte());
     }
 
     __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
