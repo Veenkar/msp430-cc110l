@@ -134,7 +134,7 @@ ifeq ($(BUILD_TYPE),lib)
     BUILD_TARGET_CMD=ar rcs $@ $^
 else
 	BUILD_TARGET=$(PROJ_NAME)
-    BUILD_TARGET_CMD=$(CC) $(BUILD_TARGET_FLAGS) -o $@ $^ $(CFLAGS) $(LIBS)
+    BUILD_TARGET_CMD=$(CC) $(BUILD_TARGET_FLAGS) $(CFLAGS) -L$(LDIR) -o $@ $^
 endif
 $(info BUILD_TARGET: $(BUILD_TARGET))
 
@@ -152,7 +152,7 @@ clean:
 ########################################################################################################################
 # MAIN
 ########################################################################################################################
-$(BUILD_TARGET): $(OBJ)
+$(BUILD_TARGET): $(OBJ) $(LIBS)
 	@mkdir -p $(@D)
 	$(BUILD_TARGET_CMD)
 
