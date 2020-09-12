@@ -5,28 +5,42 @@ MAKEFILE_NAME=$(firstword $(MAKEFILE_LIST))
 
 LIBS_DIRS=$(wildcard *_lib)
 LIBS=$(foreach D,$(LIBS_DIRS),$D/$D.a)
+
+CHILD_MAKES=AccRcv.mk
+CHILD_TARGETS=$(patsubst %.mk,%,$(CHILD_MAKES))
+
 $(info LIBS_DIRS: $(LIBS_DIRS))
 $(info LIBS: $(LIBS))
 
-all: libs info
+all: libs acc_rcv/acc_rcv
 
-info:
-	@echo ....:::: $(MAKEFILE_NAME) ::::....
-
-clean: info
+clean:
+	@echo "===================================================="
+	@echo "BUILDING: ACC_RCV"
+	@echo "===================================================="
+	cd acc_rcv && $(MAKE) clean
+	@echo "===================================================="
+	@echo "CLEANING: ACC_RCV"
+	@echo "===================================================="
 	cd acc_lib && $(MAKE) clean
 
-cleanx:
-	cd acc_lib && $(MAKE) clean
+acc_rcv/acc_rcv:
+	@echo "===================================================="
+	@echo "BUILDING: ACC_RCV"
+	@echo "===================================================="
+	cd acc_rcv && $(MAKE)
+
 
 libs: $(LIBS)
 
 %.a:
+	@echo "===================================================="
+	@echo "BUILDING: LIB"
+	@echo "===================================================="
 	cd $(@D) && $(MAKE)
 
 
-
-.PHONY: all clean subsystem info cleanx
+.PHONY: all clean libs
 
 ########################################################################################################################
 ########################################################################################################################
