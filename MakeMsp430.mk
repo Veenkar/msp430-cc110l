@@ -65,7 +65,7 @@ DEFAULT_BUILD_TYPE=app
 DEFAULT_CC=msp430-gcc
 DEFAULT_DEBUG_FLAGS=-O0 -g3 -ggdb -gdwarf-2
 DEFAULT_WARN_FLAGS=-Wall -Wextra -Wshadow
-DEFAULT_OTHER_FLAGS=--vv -MMD
+DEFAULT_OTHER_FLAGS=--vv
 DEFAULT_STANDARD=gnu90
 # VARIANT - MUST SPECIFY in main Makefile, which includes this MakeMsp430.mk! Like this:
 # VARIANT=msp430g2553

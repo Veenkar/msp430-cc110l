@@ -7,6 +7,7 @@ obj
 **.o
 **.d
 acc_rcv/acc_rcv
+acc_snd/acc_snd
 
 # Qt creator
 **/acc_rcv.config

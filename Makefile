@@ -12,7 +12,7 @@ CHILD_TARGETS=$(patsubst %.mk,%,$(CHILD_MAKES))
 $(info LIBS_DIRS: $(LIBS_DIRS))
 $(info LIBS: $(LIBS))
 
-all: libs acc_rcv/acc_rcv
+all: libs acc_rcv/acc_rcv acc_snd/acc_snd
 
 clean:
 	@echo "===================================================="
@@ -20,7 +20,11 @@ clean:
 	@echo "===================================================="
 	cd acc_rcv && $(MAKE) clean
 	@echo "===================================================="
-	@echo "CLEANING: ACC_RCV"
+	@echo "CLEANING: ACC_SND"
+	@echo "===================================================="
+	cd acc_snd && $(MAKE) clean
+	@echo "===================================================="
+	@echo "CLEANING: ACC_LIB"
 	@echo "===================================================="
 	cd acc_lib && $(MAKE) clean
 
@@ -29,6 +33,12 @@ acc_rcv/acc_rcv:
 	@echo "BUILDING: ACC_RCV"
 	@echo "===================================================="
 	cd acc_rcv && $(MAKE)
+
+acc_snd/acc_snd:
+	@echo "===================================================="
+	@echo "BUILDING: ACC_SND"
+	@echo "===================================================="
+	cd acc_snd && $(MAKE)
 
 
 libs: $(LIBS)
