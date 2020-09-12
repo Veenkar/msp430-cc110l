@@ -82,7 +82,7 @@ ifeq ($(VARIANT),)
 	$(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
 endif
 
-IDIR_FLAGS=$(patsubst %, -I %,$(IDIR))
+IDIR_FLAGS=$(patsubst %, -I%,$(IDIR))
 
 BUILD_TYPE:=$(or $(BUILD_TYPE),$(DEFAULT_BUILD_TYPE))
 DEBUG_FLAGS:=$(or $(DEBUG_FLAGS),$(DEFAULT_DEBUG_FLAGS))
@@ -168,7 +168,7 @@ $(BUILD_TARGET): $(OBJ) $(LIBS)
 ########################################################################################################################
 # DEPENDENCIES
 ########################################################################################################################
-DEP_CMD=$(CC) -M $(CFLAGS) $(IDIR)
+DEP_CMD=$(CC) -M $(CFLAGS)
 
 $(DEP)/%.d: $(SRC)/%.c $(MAKEFILES)
 	@mkdir -p $(@D);
