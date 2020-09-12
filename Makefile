@@ -14,6 +14,10 @@ info:
 	@echo ....:::: $(MAKEFILE_NAME) ::::....
 
 clean: info
+	cd acc_lib && $(MAKE) clean
+
+cleanx:
+	cd acc_lib && $(MAKE) clean
 
 libs: $(LIBS)
 
@@ -22,7 +26,7 @@ libs: $(LIBS)
 
 
 
-.PHONY: all clean subsystem info
+.PHONY: all clean subsystem info cleanx
 
 ########################################################################################################################
 ########################################################################################################################

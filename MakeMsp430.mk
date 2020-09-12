@@ -118,15 +118,15 @@ $(info makefiles: $(MAKEFILES))
 ########################################################################################################################
 # FLAGS CHANGE DETECTION
 ########################################################################################################################
-PREV_BUILDINFO_VALUE = $(shell if [ -f $(BUILDINFO) ]; then cat "${BUILDINFO}"; fi)
-CURRENT_BUILDINFO_VALUE=$(CC) $(CFLAGS)
-$(info curr compile command: $(CURRENT_BUILDINFO_VALUE))
-$(info prev flags: $(PREV_CFLAGS))
-$(shell \
-	if [ "$(PREV_BUILDINFO_VALUE)" != "$(CURRENT_BUILDINFO_VALUE)" ]; then \
-		mkdir -p `dirname $(BUILDINFO)` && echo "$(CURRENT_BUILDINFO_VALUE)" > $(BUILDINFO); \
-	fi\
-)
+# PREV_BUILDINFO_VALUE = $(shell if [ -f $(BUILDINFO) ]; then cat "${BUILDINFO}"; fi)
+# CURRENT_BUILDINFO_VALUE=$(CC) $(CFLAGS)
+# $(info curr compile command: $(CURRENT_BUILDINFO_VALUE))
+# $(info prev flags: $(PREV_CFLAGS))
+# $(shell \
+# 	if [ "$(PREV_BUILDINFO_VALUE)" != "$(CURRENT_BUILDINFO_VALUE)" ]; then \
+# 		mkdir -p `dirname $(BUILDINFO)` && echo "$(CURRENT_BUILDINFO_VALUE)" > $(BUILDINFO); \
+# 	fi\
+# )
 
 ########################################################################################################################
 # BUILD TYPES
@@ -141,21 +141,28 @@ endif
 $(info BUILD_TARGET: $(BUILD_TARGET))
 
 ########################################################################################################################
-# MAIN TARGETS (ALL needs to be the first rule)
+# ALL - needs to be the first rule
 ########################################################################################################################
-all: $(BUILD_TARGET) info
+all: $(BUILD_TARGET)
 
-clean: info
-	rm -f $(PROJ_NAME) *.a $(ODIR)/*.o $(ODIR)/*.a $(BUILDINFO) $(DEP)/*.d $(ODIR)/*.d.* *~ core $(INCDIR)/*~
+########################################################################################################################
+# CLEAN
+########################################################################################################################
+clean:
+	rm -f $(PROJ_NAME) *.a $(ODIR)/*.o $(ODIR)/*.a $(DEP)/*.d $(ODIR)/*.d.* *~ core $(INCDIR)/*~
 
 info:
 	@echo ....:::: $(MAKEFILE_NAME) ::::....
 
 ########################################################################################################################
+# PHONIES CONFIG
+########################################################################################################################
+.PHONY: clean all
+
+########################################################################################################################
 # MAIN
 ########################################################################################################################
 $(BUILD_TARGET): $(OBJ) $(LIBS)
-    @echo ....:::: PROCESSING MAKEFILE: $(MAKEFILE_NAME) ::::....
 	@mkdir -p $(@D)
 	$(BUILD_TARGET_CMD)
 
@@ -164,11 +171,11 @@ $(BUILD_TARGET): $(OBJ) $(LIBS)
 ########################################################################################################################
 DEP_CMD=$(CC) -M $(CPPFLAGS) -I $(IDIR)
 
-$(DEP)/%.d: $(SRC)/%.c $(MAKEFILES) $(BUILDINFO)
+$(DEP)/%.d: $(SRC)/%.c $(MAKEFILES)
 	@mkdir -p $(@D);
 	@set -e; rm -f $@;
 	$(DEP_CMD) $< > $@.$$$$; \
-		sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : $(BUILDINFO) $(MAKEFILES) ,g' < $@.$$$$ > $@; \
+		sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : $(MAKEFILES) ,g' < $@.$$$$ > $@; \
 		rm -f $@.$$$$
 
 ########################################################################################################################
@@ -179,11 +186,6 @@ OBJ_CMD=$(CC) -c -o $@ $< $(CFLAGS)
 $(ODIR)/%.o: $(SRC)/%.c $(DEP)/%.d
 	@mkdir -p $(@D);
 	$(OBJ_CMD)
-
-########################################################################################################################
-# PHONIES CONFIG
-########################################################################################################################
-.PHONY: clean all
 
 ########################################################################################################################
 # INCLUDE DEPENDENCIES TO THIS MAKEFILE
