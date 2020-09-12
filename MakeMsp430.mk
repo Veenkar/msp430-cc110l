@@ -82,6 +82,8 @@ ifeq ($(VARIANT),)
 	$(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
 endif
 
+IDIR_FLAGS=$(patsubst %, -I %,$(IDIR))
+
 BUILD_TYPE:=$(or $(BUILD_TYPE),$(DEFAULT_BUILD_TYPE))
 DEBUG_FLAGS:=$(or $(DEBUG_FLAGS),$(DEFAULT_DEBUG_FLAGS))
 WARN_FLAGS:=$(or $(WARN_FLAGS),$(DEFAULT_WARN_FLAGS))
@@ -91,7 +93,7 @@ OTHER_FLAGS:=$(or $(OTHER_FLAGS),$(DEFAULT_OTHER_FLAGS))
 # VARIANT=msp430g2553
 
 CFLAGS:=$(CFLAGS)		\
-	-I$(IDIR)			\
+	$(IDIR_FLAGS)       \
 	$(DEBUG_FLAGS)		\
 	$(WARN_FLAGS)		\
 	-mmcu=$(VARIANT)	\
@@ -149,7 +151,7 @@ all: $(BUILD_TARGET)
 # CLEAN
 ########################################################################################################################
 clean:
-	rm -f $(PROJ_NAME) *.a $(ODIR)/*.o $(ODIR)/*.a $(DEP)/*.d $(ODIR)/*.d.* *~ core $(INCDIR)/*~
+	rm -f $(PROJ_NAME) *.a $(ODIR)/*.o $(ODIR)/*.a $(DEP)/*.d $(ODIR)/*.d.* *~ core
 
 ########################################################################################################################
 # PHONIES CONFIG
@@ -166,7 +168,7 @@ $(BUILD_TARGET): $(OBJ) $(LIBS)
 ########################################################################################################################
 # DEPENDENCIES
 ########################################################################################################################
-DEP_CMD=$(CC) -M $(CPPFLAGS) -I $(IDIR)
+DEP_CMD=$(CC) -M $(CFLAGS) $(IDIR)
 
 $(DEP)/%.d: $(SRC)/%.c $(MAKEFILES)
 	@mkdir -p $(@D);
