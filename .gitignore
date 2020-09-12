@@ -3,9 +3,10 @@ dep
 obj
 
 # build files
-acc_rcv
+**.a
 **.o
 **.d
+acc_rcv/acc_rcv
 
 # Qt creator
 **/acc_rcv.config
