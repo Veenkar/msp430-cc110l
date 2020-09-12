@@ -15,7 +15,7 @@ BUILDINFO=$(ODIR)/build.info
 PROJ_NAME=acc_rcv
 CC=msp430-gcc
 VARIANT=msp430g2553
-DEBUG_FLAGS=-mmcu=msp430g2553 -c -O0 -g3 -ggdb -gdwarf-2
+DEBUG_FLAGS=-mmcu=msp430g2553 -O0 -g3 -ggdb -gdwarf-2
 WARN_FLAGS=-Wall -Wextra -Wshadow
 CFLAGS=-I$(IDIR) $(DEBUG_FLAGS) $(WARN_FLAGS) -mmcu=$(VARIANT) --vv -std=gnu90 -MMD
 #LIBS=-lm
