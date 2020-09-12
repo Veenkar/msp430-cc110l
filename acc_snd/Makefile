@@ -2,7 +2,7 @@
 ODIR=obj
 LDIR=lib
 # TODO MULTIPLE IDIRS
-IDIR=../acc_lib/include
+IDIR=include ../acc_lib/include
 SRC=src
 DEP=dep
 
