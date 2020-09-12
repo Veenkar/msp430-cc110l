@@ -113,10 +113,15 @@ all: $(PROJ_NAME)
 ########################################################################################################################
 # FLAGS CHANGE DETECTION
 ########################################################################################################################
-PREV_CFLAGS = $(shell if [ -f $(BUILDINFO) ]; then cat "${BUILDINFO}"; fi)
-$(info curr flags: $(CFLAGS))
+PREV_BUILDINFO_VALUE = $(shell if [ -f $(BUILDINFO) ]; then cat "${BUILDINFO}"; fi)
+CURRENT_BUILDINFO_VALUE=$(CC) $(CFLAGS)
+$(info curr compile command: $(CURRENT_BUILDINFO_VALUE))
 $(info prev flags: $(PREV_CFLAGS))
-$(shell if [ "$(PREV_CFLAGS)" != "$(CFLAGS)" ]; then mkdir -p `dirname $(BUILDINFO)` && echo "$(CFLAGS)" > $(BUILDINFO); fi)
+$(shell \
+    if [ "$(PREV_BUILDINFO_VALUE)" != "$(CURRENT_BUILDINFO_VALUE)" ]; then \
+        mkdir -p `dirname $(BUILDINFO)` && echo "$(CURRENT_BUILDINFO_VALUE)" > $(BUILDINFO); \
+    fi\
+)
 
 ########################################################################################################################
 # MAIN
