@@ -28,15 +28,15 @@
 ##_______________________________\/\\\_________________________________\/\\\____\///\\\\\\\\\/____\///\\\\\\\/________##
 ##________________________________\///__________________________________\///_______\/////////________\///////_.mk_____##
 ########################################################################################################################
-## EXAMPLE MINIMAL CONFIG (other variables default
+## EXAMPLE MINIMAL CONFIG (other variables default)
 ########################################################################################################################
-## VARIANT=msp430g2553
+## VARIANT=msp430g2553  # launchpad
 ##
 ##
 ########################################################################################################################
 ## EXAMPLE FULL CONFIG (all config values used, but same as defaults, so equivalent to minimal)
 ########################################################################################################################
-## # PATHS
+## # PATHS# build files
 ## ODIR=obj
 ## LDIR=lib
 ## IDIR=include
@@ -72,10 +72,10 @@ DEFAULT_STANDARD=gnu90
 ## FLAGS PROCESSING
 ########################################################################################################################
 ifeq ($(CC),cc)
-    CC=$(DEFAULT_CC)
+	CC=$(DEFAULT_CC)
 endif
 ifeq ($(VARIANT),)
-    $(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
+	$(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
 endif
 
 DEBUG_FLAGS:=$(or $(DEBUG_FLAGS),$(DEFAULT_DEBUG_FLAGS))
@@ -85,13 +85,13 @@ OTHER_FLAGS:=$(or $(OTHER_FLAGS),$(DEFAULT_OTHER_FLAGS))
 # VARIANT - MUST SPECIFY in main Makefile, which includes this MakeMsp430.mk! Like this:
 # VARIANT=msp430g2553
 
-CFLAGS:=$(CFLAGS)       \
-    -I$(IDIR)           \
-    $(DEBUG_FLAGS)      \
-    $(WARN_FLAGS)       \
-    -mmcu=$(VARIANT)    \
-    -STD$(STANDARD)     \
-    $(OTHER_FLAGS)
+CFLAGS:=$(CFLAGS)		\
+	-I$(IDIR)			\
+	$(DEBUG_FLAGS)		\
+	$(WARN_FLAGS)		\
+	-mmcu=$(VARIANT)	\
+	-STD$(STANDARD)		\
+	$(OTHER_FLAGS)
 
 ########################################################################################################################
 ## FILE LISTS
@@ -121,9 +121,9 @@ CURRENT_BUILDINFO_VALUE=$(CC) $(CFLAGS)
 $(info curr compile command: $(CURRENT_BUILDINFO_VALUE))
 $(info prev flags: $(PREV_CFLAGS))
 $(shell \
-    if [ "$(PREV_BUILDINFO_VALUE)" != "$(CURRENT_BUILDINFO_VALUE)" ]; then \
-        mkdir -p `dirname $(BUILDINFO)` && echo "$(CURRENT_BUILDINFO_VALUE)" > $(BUILDINFO); \
-    fi\
+	if [ "$(PREV_BUILDINFO_VALUE)" != "$(CURRENT_BUILDINFO_VALUE)" ]; then \
+		mkdir -p `dirname $(BUILDINFO)` && echo "$(CURRENT_BUILDINFO_VALUE)" > $(BUILDINFO); \
+	fi\
 )
 
 ########################################################################################################################
@@ -141,12 +141,14 @@ $(PROJ_NAME): $(OBJ)
 ########################################################################################################################
 # DEPENDENCIES
 ########################################################################################################################
+DEP_CMD=$(CC) -M $(CPPFLAGS) -I $(IDIR)
+
 $(DEP)/%.d: $(SRC)/%.c $(MAKEFILES) $(BUILDINFO)
-	@mkdir -p $(@D)
-	@set -e; rm -f $@; \
-	$(CC) -M $(CPPFLAGS) -I $(IDIR) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : $(BUILDINFO) $(MAKEFILES) ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	@mkdir -p $(@D);
+	@set -e; rm -f $@;
+	$(DEP_CMD) $< > $@.$$$$; \
+		sed 's,\($*\)\.o[ :]*,$(ODIR)/\1.o $@ : $(BUILDINFO) $(MAKEFILES) ,g' < $@.$$$$ > $@; \
+		rm -f $@.$$$$
 
 ########################################################################################################################
 # INCLUDE DEPENDENCIES TO THIS MAKEFILE
@@ -158,9 +160,11 @@ DEPS = $(patsubst %,$(DEP)/%,$(_DEPS))
 ########################################################################################################################
 # OBJECTS
 ########################################################################################################################
+OBJ_CMD=$(CC) -c -o $@ $< $(CFLAGS)
+
 $(ODIR)/%.o: $(SRC)/%.c $(DEP)/%.d
-	@mkdir -p $(@D)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	@mkdir -p $(@D);
+	$(OBJ_CMD)
 
 ########################################################################################################################
 # CLEAN
