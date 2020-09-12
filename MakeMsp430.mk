@@ -43,9 +43,13 @@
 ## # CONFIG
 ## PROJ_NAME=acc_rcv
 ## CC=msp430-gcc
-## CFLAGS=-I$(IDIR) -mmcu=msp430g2553 --vv -g
+## VARIANT=msp430g2553
+## DEBUG_FLAGS=-mmcu=msp430g2553 -O0 -g3 -ggdb -gdwarf-2
+## WARN_FLAGS=-Wall -Wextra -Wshadow
+## CFLAGS=-I$(IDIR) $(DEBUG_FLAGS) $(WARN_FLAGS) -mmcu=$(VARIANT) --vv -std=gnu90 -MMD
 ## #LIBS=-lm
 ## LIBS=
+##
 ########################################################################################################################
 ########################################################################################################################
 
