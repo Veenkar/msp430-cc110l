@@ -74,6 +74,9 @@ DEFAULT_STANDARD=gnu90
 ifeq ($(CC),cc)
     CC=$(DEFAULT_CC)
 endif
+ifeq ($(VARIANT),)
+    $(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
+endif
 
 DEBUG_FLAGS:=$(or $(DEBUG_FLAGS),$(DEFAULT_DEBUG_FLAGS))
 WARN_FLAGS:=$(or $(WARN_FLAGS),$(DEFAULT_WARN_FLAGS))
