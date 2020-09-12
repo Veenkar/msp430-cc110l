@@ -48,6 +48,7 @@
 ##
 ## # CONFIG
 ## PROJ_NAME=acc_rcv
+## BUILD_TYPE=app
 ## CC=msp430-gcc
 ## VARIANT=msp430g2553
 ## DEBUG_FLAGS=-mmcu=msp430g2553 -O0 -g3 -ggdb -gdwarf-2
@@ -60,6 +61,7 @@
 ########################################################################################################################
 ## DEFAULT FLAGS
 ########################################################################################################################
+DEFAULT_BUILD_TYPE=app
 DEFAULT_CC=msp430-gcc
 DEFAULT_DEBUG_FLAGS=-O0 -g3 -ggdb -gdwarf-2
 DEFAULT_WARN_FLAGS=-Wall -Wextra -Wshadow
@@ -78,6 +80,7 @@ ifeq ($(VARIANT),)
 	$(error PLEASE SPECIFY VARIANT (in your main Makefile which includes this MakeMsp430.mk))
 endif
 
+BUILD_TYPE:=$(or $(BUILD_TYPE),$(DEFAULT_BUILD_TYPE))
 DEBUG_FLAGS:=$(or $(DEBUG_FLAGS),$(DEFAULT_DEBUG_FLAGS))
 WARN_FLAGS:=$(or $(WARN_FLAGS),$(DEFAULT_WARN_FLAGS))
 STANDARD:=$(or $(STANDARD),$(DEFAULT_STANDARD))
@@ -126,7 +129,6 @@ $(shell \
 ########################################################################################################################
 # BUILD TYPES
 ########################################################################################################################
-BUILD_TYPE=lib
 ifeq ($(BUILD_TYPE),lib)
 	BUILD_TARGET=$(PROJ_NAME).a
     BUILD_TARGET_CMD=ar rcs $@ $^

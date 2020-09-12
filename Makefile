@@ -13,6 +13,8 @@ BUILDINFO=$(ODIR)/build.info
 
 # CONFIG
 PROJ_NAME=acc_rcv
+BUILD_TYPE=app
+
 #LIBS=-lm
 LIBS=
 
