@@ -1,6 +1,9 @@
-
+# build dirs
+dep
+obj
 
 # build files
+acc_rcv
 **.o
 **.d
 
